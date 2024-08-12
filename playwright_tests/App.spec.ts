@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('basic test', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:5173/signup');
   const emailInput = page.locator("input[type='email']");
   // 異常系
   await emailInput.fill("invalid");
