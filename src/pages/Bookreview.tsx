@@ -1,47 +1,44 @@
-import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
-import axios from "axios";
-import { url } from "../const";
-
-type Book = {
-  id: string;
-  title: string;
-  url: string;
-  detail: string;
-  review: string;
-  reviewer: string;
-};
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, update } from "../features/bookreviewSlice";
+import { BookreviewList } from "../components/BookreviewList";
 
 export const Bookreview = () => {
-  const [offset, setOffset] = useState<number>(0);
-  const [bookList, setBookList] = useState<Book[]>([]);
+  const offset = useSelector(
+    (state: RootState) => state.bookreviewOffset.offset
+  );
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await axios.get(`${url}/public/books?offset=${offset}`);
-        setBookList([...res.data]);
-        console.log(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    })();
-  }, [offset]);
+  const handlePrevBtn = () => {
+    dispatch(
+      update({
+        offset: offset - 10,
+      })
+    );
+  };
+
+  const handleNextBtn = () => {
+    dispatch(
+      update({
+        offset: offset + 10,
+      })
+    );
+  };
 
   return (
     <>
       <Header />
       <main>
-        <div className="flex flex-col gap-y-2">
-          {bookList.length != 0 &&
-            bookList.map((book) => {
-              return (
-                <div key={book.id} className="bg-blue-100 min-h-24 p-4">
-                  {book.title}<br />
-                  {book.review}
-                </div>
-              );
-            })}
+        <BookreviewList />
+        <div className="flex gap-x-2 mt-2 mx-auto">
+          <button
+            disabled={offset < 1}
+            onClick={handlePrevBtn}
+            className={"disabled:bg-blue-300"}
+          >
+            前へ
+          </button>
+          <button onClick={handleNextBtn}>次へ</button>
         </div>
       </main>
     </>
