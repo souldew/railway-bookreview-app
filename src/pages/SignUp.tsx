@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "./SignUp.css";
 import { Header } from "../components/Header";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
