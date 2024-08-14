@@ -15,6 +15,7 @@ type Book = {
 
 export const BookreviewList = () => {
   const [bookList, setBookList] = useState<Book[]>([]);
+  // Redux
   const offset = useSelector(
     (state: RootState) => state.bookreviewOffset.offset
   );
@@ -23,7 +24,6 @@ export const BookreviewList = () => {
       try {
         const res = await axios.get(`${url}/public/books?offset=${offset}`);
         setBookList([...res.data]);
-        console.log(res.data);
       } catch (err) {
         console.log(err);
       }
@@ -36,7 +36,7 @@ export const BookreviewList = () => {
         {bookList.length != 0 &&
           bookList.map((book) => {
             return (
-              <div key={book.id} className="bg-blue-100 min-h-24 p-4">
+              <div key={book.id} className="bg-blue-100 min-h-26 p-2">
                 {book.title}
                 <br />
                 {book.review}
