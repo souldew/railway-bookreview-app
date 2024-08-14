@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Cookies } from "react-cookie";
 
 
 type BookreviewOffsetState = {
@@ -18,17 +19,44 @@ const bookreviewOffsetSlice = createSlice({
       state.offset = action.payload.offset;
     }
   }
+});
+
+
+type AuthState = {
+  isSignIn: boolean;
+};
+
+const cookie = new Cookies();
+const initialAuthState: AuthState = {
+  isSignIn: cookie.get("token") !== undefined,
+};
+
+const authSlice = createSlice({
+  name: "auth",
+  initialState: initialAuthState,
+  reducers: {
+    signIn: (state: AuthState) => {
+      state.isSignIn = true;
+    },
+    signOut: (state: AuthState) => {
+      state.isSignIn = false;
+    }
+  }
 })
 
 const store = configureStore({
   reducer: {
     bookreviewOffset: bookreviewOffsetSlice.reducer,
+    auth: authSlice.reducer,
   },
 });
 
 
 // ストアの型
+export default store;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export default store;
+// BookreviewOffset
 export const { update } = bookreviewOffsetSlice.actions;
+// auth
+export const {signIn, signOut} = authSlice.actions;

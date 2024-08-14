@@ -1,6 +1,6 @@
 import { Header } from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, update } from "../features/bookreviewSlice";
+import { RootState, update } from "../features/store";
 import { BookreviewList } from "../components/BookreviewList";
 
 export const Bookreview = () => {
