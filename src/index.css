@@ -67,15 +67,15 @@ button {
   background-color: var(--blue);
   color: var(--white);
   cursor: pointer;
-  transition: border-color 0.25s;
+  /* transition: border-color 0.25s; */
 }
 button:hover {
   border-color: #646cff;
 }
-button:focus,
+/* button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
-}
+} */
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -85,7 +85,7 @@ button:focus-visible {
   a:hover {
     color: #747bff;
   }
-  button {
-    /* background-color: #f9f9f9; */
-  }
+  /* button {
+    background-color: #f9f9f9;
+  } */
 }

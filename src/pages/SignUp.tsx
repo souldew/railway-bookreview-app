@@ -5,7 +5,10 @@ import { ErrorMessage } from "@hookform/error-message";
 import Compressor from "compressorjs";
 import axios from "axios";
 import { url } from "../const";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { RootState, signIn } from "../features/store";
+import { useDispatch, useSelector } from "react-redux";
+import { useCookies } from "react-cookie";
 
 type Inputs = {
   name: string;
@@ -15,8 +18,11 @@ type Inputs = {
 };
 
 export const SignUp = () => {
-  const [errorMessage, setErrorMessage] = useState<string>("");
   const navigate = useNavigate();
+  const auth = useSelector((state: RootState) => state.auth.isSignIn);
+  const dispatch = useDispatch();
+  const [_cookies, setCookie] = useCookies();
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>(
     undefined
   );
@@ -27,30 +33,6 @@ export const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-
-  const makeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const rawFile = e.target.files![0];
-    try {
-      // 画像リサイズ
-      new Compressor(rawFile, {
-        quality: 0.1,
-        maxWidth: 50,
-        maxHeight: 50,
-        success: (result: Blob) => {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            setAvatarPreview(e.target?.result as string);
-          };
-          setCompressAvatar(
-            new File([result], "compressed_image.jpg", { type: "image/jpeg" })
-          );
-          reader.readAsDataURL(result);
-        },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const onSubmit: SubmitHandler<Inputs> = (form) => {
     const data = {
@@ -80,12 +62,38 @@ export const SignUp = () => {
             }
           );
         }
+        dispatch(signIn());
+        setCookie("token", token);
         navigate("/");
       } catch (err) {
         setErrorMessage(`サインアップに失敗しました。 ${err}`);
       }
     })();
     // ログインへ移動
+  };
+
+  const makeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const rawFile = e.target.files![0];
+    try {
+      // 画像リサイズ
+      new Compressor(rawFile, {
+        quality: 0.1,
+        maxWidth: 50,
+        maxHeight: 50,
+        success: (result: Blob) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            setAvatarPreview(e.target?.result as string);
+          };
+          setCompressAvatar(
+            new File([result], "compressed_image.jpg", { type: "image/jpeg" })
+          );
+          reader.readAsDataURL(result);
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const validateImage = (files: FileList) => {
@@ -103,6 +111,9 @@ export const SignUp = () => {
     }
     return true;
   };
+
+  if (auth) return <Navigate to="/bookreview" />
+
   return (
     <>
       <Header />

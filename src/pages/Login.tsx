@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Header } from "../components/Header";
 import axios, { AxiosResponse } from "axios";
 import { url } from "../const";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useCookies } from "react-cookie";
+import { RootState, signIn } from "../features/store";
+import { useDispatch, useSelector } from "react-redux";
 
 type Inputs = {
   email: string;
@@ -13,6 +16,9 @@ type Inputs = {
 
 export const Login = () => {
   const navigate = useNavigate();
+  const auth = useSelector((state: RootState) => state.auth.isSignIn);
+  const dispatch = useDispatch();
+  const [_cookies, setCookie] = useCookies();
 
   const {
     register,
@@ -20,13 +26,8 @@ export const Login = () => {
     formState: {errors},
   } = useForm<Inputs>();
   
-  // const [email, setEmail] = useState<string>("");
-  // const [password, setPassword] = useState<string>("");
+
   const [errorMessage, setErrorMessage] = useState<string>("");
-  // const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) =>
-  //   setEmail(e.target.value);
-  // const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) =>
-  //   setPassword(e.target.value);
 
   const onSubmit: SubmitHandler<Inputs> = (form) => {
     (async () => {
@@ -36,14 +37,17 @@ export const Login = () => {
       };
       try {
         const res: AxiosResponse = await axios.post(`${url}/signin`, data);
-        // setCookie("token", res.data.token);
-        console.log(res);
+        console.log(res.data.token);
+        setCookie("token", res.data.token);
+        dispatch(signIn());
         navigate("/bookreview");
       } catch (err) {
         setErrorMessage(`ログインに失敗しました。 ${err}`);
       }
     })();
   };
+
+  if (auth) return <Navigate to="/bookreview" />
 
   return (
     <>
