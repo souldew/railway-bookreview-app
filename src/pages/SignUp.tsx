@@ -69,7 +69,6 @@ export const SignUp = () => {
         setErrorMessage(`サインアップに失敗しました。 ${err}`);
       }
     })();
-    // ログインへ移動
   };
 
   const makeAvatar = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,7 +111,7 @@ export const SignUp = () => {
     return true;
   };
 
-  if (auth) return <Navigate to="/bookreview" />
+  if (auth) return <Navigate to="/bookreview" />;
 
   return (
     <>
@@ -184,9 +183,7 @@ export const SignUp = () => {
           <div style={{ color: "red" }}>
             <ErrorMessage errors={errors} name="avatar" />
           </div>
-          {avatarPreview && (
-            <img src={avatarPreview} className="mt-4" />
-          )}
+          {avatarPreview && <img src={avatarPreview} className="mt-4" />}
           <button style={{ marginTop: "1rem" }}>登録</button>
         </form>
         <div style={{ marginTop: "3rem" }}>

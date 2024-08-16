@@ -19,10 +19,11 @@ export const Header = () => {
   };
 
   useEffect(() => {
-    auth && (async() => {
-      const res = await fetchUserInfo(cookies["token"]);
-      setName(res.name);
-    })();
+    auth &&
+      (async () => {
+        const res = await fetchUserInfo(cookies["token"]);
+        setName(res.name);
+      })();
   }, []);
 
   return (
@@ -42,8 +43,13 @@ export const Header = () => {
         </Link>
       </h1>
       {auth ? (
-        <div className="flex gap-x-4">
-          <div className=" my-auto">{name}</div>
+        <div className="flex gap-x-8">
+          <Link
+            className="text-white hover:text-blue-200 my-auto "
+            to="/profile"
+          >
+            {name}
+          </Link>
           <button
             className="block my-auto ml-auto mr-4 border-none hover:text-blue-200"
             onClick={handleSignOut}
@@ -53,7 +59,7 @@ export const Header = () => {
         </div>
       ) : (
         <button
-          className="my-auto ml-auto mr-4 border-none hover:text-blue-200"
+          className="my-auto mr-4 border-none hover:text-blue-200"
           onClick={() => navigate("/login")}
         >
           ログイン

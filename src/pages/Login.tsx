@@ -23,9 +23,8 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<Inputs>();
-  
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -33,11 +32,10 @@ export const Login = () => {
     (async () => {
       const data = {
         email: form.email,
-        password: form.password
+        password: form.password,
       };
       try {
         const res: AxiosResponse = await axios.post(`${url}/signin`, data);
-        console.log(res.data.token);
         setCookie("token", res.data.token);
         dispatch(signIn());
         navigate("/bookreview");
@@ -47,13 +45,13 @@ export const Login = () => {
     })();
   };
 
-  if (auth) return <Navigate to="/bookreview" />
+  if (auth) return <Navigate to="/bookreview" />;
 
   return (
     <>
       <Header />
       <main>
-        <p style={{display: "block", color: "red"}}>{errorMessage}</p>
+        <p style={{ display: "block", color: "red" }}>{errorMessage}</p>
         <form onSubmit={handleSubmit(onSubmit)}>
           <label>
             メールアドレス
@@ -65,30 +63,37 @@ export const Login = () => {
                 pattern: {
                   value:
                     /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  message: 'メールアドレスの形式が不正です',
+                  message: "メールアドレスの形式が不正です",
                 },
               })}
             />
           </label>
-        <div style={{color: "red"}}><ErrorMessage errors={errors} name="email" /></div>
-        <label>
-          パスワード
-          <br />
-          <input
-            type="password"
-            {...register("password", {
-              required: "パスワードは必須です",
-              minLength: {
-                value: 5,
-                message: "パスワードは5文字以上である必要があります"
-              }
-            })} />
-        </label>
-        <div style={{color: "red"}}><ErrorMessage errors={errors} name="password" /></div>
-        
+          <div style={{ color: "red" }}>
+            <ErrorMessage errors={errors} name="email" />
+          </div>
+          <label>
+            パスワード
+            <br />
+            <input
+              type="password"
+              {...register("password", {
+                required: "パスワードは必須です",
+                minLength: {
+                  value: 5,
+                  message: "パスワードは5文字以上である必要があります",
+                },
+              })}
+            />
+          </label>
+          <div style={{ color: "red" }}>
+            <ErrorMessage errors={errors} name="password" />
+          </div>
+
           <button style={{ marginTop: "1rem" }}>ログイン</button>
         </form>
-        <div style={{marginTop: "3rem"}}><Link to="/signup">ユーザ作成画面へ</Link></div>
+        <div style={{ marginTop: "3rem" }}>
+          <Link to="/signup">ユーザ作成画面へ</Link>
+        </div>
       </main>
     </>
   );
