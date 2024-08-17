@@ -37,7 +37,7 @@ export const BookreviewList = () => {
         {bookList.length != 0 &&
           bookList.map((book) => {
             return (
-              <div key={book.id} className="bg-blue-100 min-h-26 p-2">
+              <div key={book.id} className={`min-h-26 p-2 ${false ? "bg-green-100" : "bg-blue-100"}`}>
                 <Link to={`/detail/${book.id}`} className=" text-inherit block"> 
                   {book.title}
                   <br />

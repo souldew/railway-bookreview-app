@@ -30,8 +30,6 @@ export const New = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (form) => {
-    console.log("cookie", cookies.token);
-    console.log("cookieb", cookies["token"]);
     const data = {
       title: form.title,
       url: form.url,
@@ -80,10 +78,7 @@ export const New = () => {
             <input
               className="w-96"
               type="text"
-              {...register(
-                "url"
-                // {required: "URLは必須です",}
-              )}
+              {...register("url", { required: "URLは必須です" })}
             />
           </label>
           <div style={{ color: "red" }}>
@@ -94,10 +89,7 @@ export const New = () => {
             <br />
             <textarea
               className="w-96 h-28"
-              {...register(
-                "detail"
-                // {required: "詳細は必須です",}
-              )}
+              {...register("detail", { required: "詳細は必須です" })}
             ></textarea>
           </label>
           <div className="" style={{ color: "red" }}>
@@ -108,10 +100,7 @@ export const New = () => {
             <br />
             <textarea
               className="w-96 h-28"
-              {...register(
-                "review"
-                // {required: "レビューは必須です"}
-              )}
+              {...register("review", { required: "レビューは必須です" })}
             ></textarea>
             <div style={{ color: "red" }}>
               <ErrorMessage errors={errors} name="review" />
