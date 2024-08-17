@@ -37,6 +37,11 @@ input:not([type='file']) {
   border: #767676 solid 1px;
 }
 
+textarea {
+  border: #767676 solid 1px;
+  resize: auto;
+}
+
 body {
   /* margin: 0; */
   /* display: flex; */

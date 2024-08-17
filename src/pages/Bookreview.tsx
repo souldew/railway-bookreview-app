@@ -2,8 +2,12 @@ import { Header } from "../components/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, update } from "../features/store";
 import { BookreviewList } from "../components/BookreviewList";
+import { Link } from "react-router-dom";
 
 export const Bookreview = () => {
+  const auth = useSelector(
+    (state: RootState) => state.auth.isSignIn
+  );
   const offset = useSelector(
     (state: RootState) => state.bookreviewOffset.offset
   );
@@ -29,6 +33,7 @@ export const Bookreview = () => {
     <>
       <Header />
       <main>
+        {auth && <Link to="/new" className="mb-4">新規書籍投稿</Link>}
         <BookreviewList />
         <div className="flex gap-x-2 mt-2 mx-auto">
           <button

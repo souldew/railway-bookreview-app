@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../features/store";
 import axios from "axios";
 import { url } from "../const";
+import { Link } from "react-router-dom";
 
 type Book = {
   id: string;
@@ -37,9 +38,11 @@ export const BookreviewList = () => {
           bookList.map((book) => {
             return (
               <div key={book.id} className="bg-blue-100 min-h-26 p-2">
-                {book.title}
-                <br />
-                {book.review}
+                <Link to={`/detail/${book.id}`} className=" text-inherit block"> 
+                  {book.title}
+                  <br />
+                  {book.review}
+                </Link>
               </div>
             );
           })}
