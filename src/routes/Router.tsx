@@ -8,6 +8,7 @@ import { RootState } from "../features/store";
 import { Profile } from "../pages/Profile";
 import { New } from "../pages/New";
 import { Detail } from "../pages/Detail";
+import { Edit } from "../pages/Edit";
 
 export const Router = () => {
   const auth = useSelector((state: RootState) => state.auth.isSignIn);
@@ -20,6 +21,7 @@ export const Router = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/new" element={<New />} />
         <Route path="/detail/:id" element={<Detail />} />
+        <Route path="/edit/:id" element={<Edit />} />
         {auth ? (
           <>
             <Route path="/" element={<Home />} />
