@@ -18,14 +18,14 @@ export const Router = () => {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/bookreview" element={<Bookreview />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/new" element={<New />} />
-        <Route path="/detail/:id" element={<Detail />} />
-        <Route path="/edit/:id" element={<Edit />} />
         {auth ? (
           <>
-            <Route path="/" element={<Home />} />
-            {/* <Route path="/" element={<Navigate to="/bookreview" replace />} /> */}
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/new" element={<New />} />
+            <Route path="/detail/:id" element={<Detail />} />
+            <Route path="/edit/:id" element={<Edit />} />
+            {/* <Route path="/" element={<Home />} /> */}
+            <Route path="/" element={<Navigate to="/bookreview" replace />} />
           </>
         ) : (
           <Route path="*" element={<Navigate to="/login" replace />} />

@@ -20,15 +20,16 @@ type Inputs = {
 export const New = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState<string>("");
-  // const auth = useSelector((state: RootState) => state.auth.isSignIn);
   const [cookies] = useCookies();
 
+  // react-hook-form
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
 
+  // サーバへsubmit
   const onSubmit: SubmitHandler<Inputs> = (form) => {
     const data = {
       title: form.title,
@@ -78,7 +79,13 @@ export const New = () => {
             <input
               className="w-96"
               type="text"
-              {...register("url", { required: "URLは必須です" })}
+              {...register("url", {
+                required: "URLは必須です",
+                pattern: {
+                  value: /^(http:\/\/|https:\/\/)/,
+                  message: "URLの形式が不正です",
+                },
+              })}
             />
           </label>
           <div style={{ color: "red" }}>
