@@ -1,11 +1,21 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
+  // "files": [],
+  // "references": [
+  //   { "path": "./tsconfig.app.json" },
+  //   { "path": "./tsconfig.node.json" }
+  // ],
   "compilerOptions": {
-    "esModuleInterop": true,
-    "jsx": "react-jsx"
+    "target": "es5",                          // 出力するJavaScriptのバージョン
+    "module": "commonjs",                     // モジュールシステム
+    "outDir": "./dist",                       // 出力ディレクトリ
+    "jsx": "react-jsx",                           // JSXのサポート
+    "strict": true,                           // 厳格な型チェックオプション
+    "esModuleInterop": true,                  // ES6モジュールの互換性
+    "skipLibCheck": true,                     // ライブラリチェックをスキップ
+    "forceConsistentCasingInFileNames": true,  // 大文字小文字の一貫性を強制
+    "noEmit": true,
+    "allowImportingTsExtensions": true
   },
+  "include": ["src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules"],
 }

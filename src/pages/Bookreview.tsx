@@ -33,7 +33,7 @@ export const Bookreview = () => {
     <>
       <Header />
       <main>
-        {auth && <Link to="/new" className="mb-4">新規書籍投稿</Link>}
+        {auth && <div><Link to="/new" className="mb-4">新規書籍投稿</Link></div>}
         <BookreviewList />
         <div className="flex gap-x-2 mt-2 mx-auto">
           <button

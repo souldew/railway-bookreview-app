@@ -32,7 +32,6 @@ export const Edit = () => {
   const [cookies] = useCookies();
   const [errorMessage, setErrorMessage] = useState<string>("");
 
-  console.log(bookreview);
   const {
     register,
     handleSubmit,
@@ -70,7 +69,7 @@ export const Edit = () => {
 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`${url}/books/${id}`, {
+      await axios.delete(`${url}/books/${id}`, {
         headers: {
           Authorization: `Bearer ${cookies.token}`,
         },
@@ -111,6 +110,10 @@ export const Edit = () => {
               type="text"
               {...register("url", {
                 required: "URLは必須です",
+                pattern: {
+                  value: /^(http:\/\/|https:\/\/)/,
+                  message: "URLの形式が不正です",
+                },
               })}
             />
           </label>
@@ -135,9 +138,12 @@ export const Edit = () => {
           <label>
             <span className="font-black text-lg">レビュー</span>
             <br />
-            <textarea className="w-96 h-28" {...register("review", {
-              required: "レビューは必須です"
-            })} />
+            <textarea
+              className="w-96 h-28"
+              {...register("review", {
+                required: "レビューは必須です",
+              })}
+            />
           </label>
           <div style={{ color: "red" }}>
             <ErrorMessage errors={errors} name="review" />

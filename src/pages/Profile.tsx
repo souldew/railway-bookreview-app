@@ -20,40 +20,42 @@ export const Profile = () => {
   const navigate = useNavigate();
   const auth = useSelector((state: RootState) => state.auth.isSignIn);
   const [cookies] = useCookies();
-  const [name, setName] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
+  // 画像プレビュー
   const [avatarPreview, setAvatarPreview] = useState<string>("");
+  // 圧縮した画像ファイル
   const [compressedInputFile, setCompressedInputFile] = useState<File>();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<Inputs>();
 
   useEffect(() => {
     auth &&
       (async () => {
-        const res = await fetchUserInfo(cookies["token"]);
-        // 名前をセット
-        setName(res.name);
+        const res = await fetchUserInfo(cookies.token);
+        // 名前をセット(useFormに情報をセット)
+        reset({name: res.name})
         // アイコンをセット
         setAvatarPreview(res.iconUrl);
       })();
   }, []);
 
-  const onSubmit: SubmitHandler<Inputs> = () => {
+  const onSubmit: SubmitHandler<Inputs> = (form) => {
     const data = {
-      name: name,
+      name: form.name,
     };
 
     (async () => {
-      // 新規登録
+      // ユーザ情報の更新
       try {
         await axios.put(`${url}/users`, data, {
-          headers: { Authorization: `Bearer ${cookies["token"]}` },
+          headers: { Authorization: `Bearer ${cookies.token}` },
         });
-        // アイコンの処理
+        // アイコンの更新処理
         if (compressedInputFile) {
           console.log("update img size:", compressedInputFile?.size);
           await axios.post(
@@ -64,7 +66,7 @@ export const Profile = () => {
             {
               headers: {
                 "Content-Type": "multipart/form-data",
-                Authorization: `Bearer ${cookies["token"]}`,
+                Authorization: `Bearer ${cookies.token}`,
               },
             }
           );
@@ -129,14 +131,10 @@ export const Profile = () => {
             ユーザ名
             <br />
             <input
-              value={name}
               type="text"
               {...register("name", {
-                required: name === "" ? "ユーザ名は必須です" : false,
+                required: "ユーザ名は必須です"
               })}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
             />
           </label>
           <div style={{ color: "red" }}>
